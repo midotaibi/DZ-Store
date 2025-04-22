@@ -1,0 +1,23 @@
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hologramEffect {
+    0% { box-shadow: 0 0 10px #00f, 0 0 20px #00f; }
+    50% { box-shadow: 0 0 20px #0ff, 0 0 30px #0ff; }
+    100% { box-shadow: 0 0 10px #f0f, 0 0 20px #f0f; }
+}
+
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.fadeInDown { animation-name: fadeInDown; }
+.fadeIn { animation-name: fadeIn; }
+
+.hologram-active {
+    animation: hologramEffect 3s infinite alternate;
+    border: 1px solid rgba(0, 255, 255, 0.5);
+}
