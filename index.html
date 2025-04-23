@@ -13,9 +13,10 @@
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: white;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
     }
 
     .login-container {
@@ -25,6 +26,7 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
       width: 100%;
       max-width: 400px;
+      margin-bottom: 20px;
     }
 
     .login-container h2 {
@@ -68,6 +70,31 @@
     .login-container button:hover {
       background-color: #007acc;
     }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      padding: 10px;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .social-links a {
+      color: #1e90ff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: #007acc;
+    }
   </style>
 </head>
 <body>
@@ -92,12 +119,12 @@
       </select>
 
       <label for="daira">الدائرة</label>
-      <select id="daira" name="daira" required>
+      <select id="daira" name="daira" required disabled>
         <option value="">اختر الدائرة</option>
       </select>
 
       <label for="baladia">البلدية</label>
-      <select id="baladia" name="baladia" required>
+      <select id="baladia" name="baladia" required disabled>
         <option value="">اختر البلدية</option>
       </select>
 
@@ -105,22 +132,47 @@
     </form>
   </div>
 
-  <script>
-    let data = [];
+  <div class="footer">
+    <p>تم التطوير بواسطة <strong>مؤيد الطيبي</strong> لتلبية احتياجات الناس</p>
+    <div class="social-links">
+      <a href="mailto:support@dzstore.com">الدعم الفني</a>
+      <a href="https://instagram.com/railux.0" target="_blank">إنستغرام</a>
+    </div>
+  </div>
 
-    fetch('ar.json')
-      .then(response => response.json())
-      .then(jsonData => {
-        data = jsonData;
-        populateWilayas();
-      });
+  <script>
+    // بيانات الولايات والدوائر والبلديات الجزائرية (مثال مبسط)
+    const algeriaData = [
+      // ولاية أدرار
+      { wilaya_code: 1, wilaya_name: "أدرار", daira_name: "أدرار", baladia_name: "أدرار" },
+      { wilaya_code: 1, wilaya_name: "أدرار", daira_name: "أدرار", baladia_name: "حاسي القارة" },
+      { wilaya_code: 1, wilaya_name: "أدرار", daira_name: "أوقروت", baladia_name: "أوقروت" },
+      
+      // ولاية الشلف
+      { wilaya_code: 2, wilaya_name: "الشلف", daira_name: "الشلف", baladia_name: "الشلف" },
+      { wilaya_code: 2, wilaya_name: "الشلف", daira_name: "وادي الفضة", baladia_name: "وادي الفضة" },
+      { wilaya_code: 2, wilaya_name: "الشلف", daira_name: "الكريمية", baladia_name: "الكريمية" },
+      
+      // ولاية الأغواط
+      { wilaya_code: 3, wilaya_name: "الأغواط", daira_name: "الأغواط", baladia_name: "الأغواط" },
+      { wilaya_code: 3, wilaya_name: "الأغواط", daira_name: "قصر الحيران", baladia_name: "قصر الحيران" },
+      
+      // يمكنك إضافة جميع الولايات والدوائر والبلديات هنا
+      // هذه مجرد عينة صغيرة للتوضيح
+    ];
 
     const wilayaSelect = document.getElementById('wilaya');
     const dairaSelect = document.getElementById('daira');
     const baladiaSelect = document.getElementById('baladia');
 
+    // تعبئة قائمة الولايات عند تحميل الصفحة
+    window.addEventListener('DOMContentLoaded', () => {
+      populateWilayas();
+    });
+
+    // تعبئة قائمة الولايات
     function populateWilayas() {
-      const wilayas = [...new Set(data.map(item => item.wilaya_name))];
+      const wilayas = [...new Set(algeriaData.map(item => item.wilaya_name))];
       wilayas.forEach(wilaya => {
         const option = document.createElement('option');
         option.value = wilaya;
@@ -129,11 +181,24 @@
       });
     }
 
+    // عند تغيير الولاية
     wilayaSelect.addEventListener('change', function() {
       const selectedWilaya = this.value;
       dairaSelect.innerHTML = '<option value="">اختر الدائرة</option>';
       baladiaSelect.innerHTML = '<option value="">اختر البلدية</option>';
-      const dairas = [...new Set(data.filter(item => item.wilaya_name === selectedWilaya).map(item => item.daira_name))];
+      
+      if (!selectedWilaya) {
+        dairaSelect.disabled = true;
+        baladiaSelect.disabled = true;
+        return;
+      }
+      
+      // تمكين وتعبئة قائمة الدوائر
+      dairaSelect.disabled = false;
+      const dairas = [...new Set(algeriaData
+        .filter(item => item.wilaya_name === selectedWilaya)
+        .map(item => item.daira_name))];
+      
       dairas.forEach(daira => {
         const option = document.createElement('option');
         option.value = daira;
@@ -142,8 +207,37 @@
       });
     });
 
+    // عند تغيير الدائرة
     dairaSelect.addEventListener('change', function() {
       const selectedWilaya = wilayaSelect.value;
       const selectedDaira = this.value;
       baladiaSelect.innerHTML = '<option value="">اختر البلدية</option>';
-      const baladias = data.filter24
+      
+      if (!selectedDaira) {
+        baladiaSelect.disabled = true;
+        return;
+      }
+      
+      // تمكين وتعبئة قائمة البلديات
+      baladiaSelect.disabled = false;
+      const baladias = algeriaData
+        .filter(item => item.wilaya_name === selectedWilaya && item.daira_name === selectedDaira)
+        .map(item => item.baladia_name);
+      
+      baladias.forEach(baladia => {
+        const option = document.createElement('option');
+        option.value = baladia;
+        option.textContent = baladia;
+        baladiaSelect.appendChild(option);
+      });
+    });
+
+    // عند إرسال النموذج
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('تم تسجيل البيانات بنجاح!');
+      // هنا يمكنك إضافة كود إرسال البيانات إلى الخادم
+    });
+  </script>
+</body>
+</html>
