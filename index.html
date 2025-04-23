@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DZ Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DZ Store - تسجيل الدخول</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -13,69 +13,137 @@
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: white;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      text-align: center;
     }
 
-    .header {
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-container h2 {
+      text-align: center;
       margin-bottom: 20px;
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
+    .login-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
     }
 
-    p {
-      font-size: 1.3rem;
-      margin-bottom: 30px;
-    }
-
-    .btn {
-      background-color: #1e90ff;
-      color: white;
-      padding: 12px 25px;
+    .login-container input,
+    .login-container select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
       border: none;
-      border-radius: 10px;
-      margin: 10px;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .login-container input::placeholder {
+      color: #ddd;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #1e90ff;
+      border: none;
+      border-radius: 5px;
+      color: white;
       font-size: 1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: background-color 0.3s ease;
     }
 
-    .btn:hover {
+    .login-container button:hover {
       background-color: #007acc;
-      transform: scale(1.05);
-    }
-
-    .moon-btn {
-      background-color: #444;
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 0.9rem;
-      color: #ccc;
     }
   </style>
 </head>
 <body>
+  <div class="login-container">
+    <h2>تسجيل الدخول إلى DZ Store</h2>
+    <form>
+      <label for="firstName">الاسم</label>
+      <input type="text" id="firstName" name="firstName" placeholder="أدخل اسمك" required>
 
-  <div class="header">
-    <button class="btn">✨ تأثير هولوجرام</button>
-    <button class="btn moon-btn">وضع ليلي</button>
+      <label for="lastName">اللقب</label>
+      <input type="text" id="lastName" name="lastName" placeholder="أدخل لقبك" required>
+
+      <label for="username">اسم المستخدم</label>
+      <input type="text" id="username" name="username" placeholder="أدخل اسم المستخدم" required>
+
+      <label for="password">كلمة المرور</label>
+      <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" required>
+
+      <label for="wilaya">الولاية</label>
+      <select id="wilaya" name="wilaya" required>
+        <option value="">اختر الولاية</option>
+      </select>
+
+      <label for="daira">الدائرة</label>
+      <select id="daira" name="daira" required>
+        <option value="">اختر الدائرة</option>
+      </select>
+
+      <label for="baladia">البلدية</label>
+      <select id="baladia" name="baladia" required>
+        <option value="">اختر البلدية</option>
+      </select>
+
+      <button type="submit">تسجيل الدخول</button>
+    </form>
   </div>
 
-  <h1>DZ Store 🏬</h1>
-  <p>السوق الجزائري لبيع وشراء كل شيء</p>
+  <script>
+    let data = [];
 
-  <div class="footer">
-    صنع بـحب في الجزائر | midotaibi.github.io
-  </div>
+    fetch('ar.json')
+      .then(response => response.json())
+      .then(jsonData => {
+        data = jsonData;
+        populateWilayas();
+      });
 
-</body>
-</html>
+    const wilayaSelect = document.getElementById('wilaya');
+    const dairaSelect = document.getElementById('daira');
+    const baladiaSelect = document.getElementById('baladia');
+
+    function populateWilayas() {
+      const wilayas = [...new Set(data.map(item => item.wilaya_name))];
+      wilayas.forEach(wilaya => {
+        const option = document.createElement('option');
+        option.value = wilaya;
+        option.textContent = wilaya;
+        wilayaSelect.appendChild(option);
+      });
+    }
+
+    wilayaSelect.addEventListener('change', function() {
+      const selectedWilaya = this.value;
+      dairaSelect.innerHTML = '<option value="">اختر الدائرة</option>';
+      baladiaSelect.innerHTML = '<option value="">اختر البلدية</option>';
+      const dairas = [...new Set(data.filter(item => item.wilaya_name === selectedWilaya).map(item => item.daira_name))];
+      dairas.forEach(daira => {
+        const option = document.createElement('option');
+        option.value = daira;
+        option.textContent = daira;
+        dairaSelect.appendChild(option);
+      });
+    });
+
+    dairaSelect.addEventListener('change', function() {
+      const selectedWilaya = wilayaSelect.value;
+      const selectedDaira = this.value;
+      baladiaSelect.innerHTML = '<option value="">اختر البلدية</option>';
+      const baladias = data.filter24
