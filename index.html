@@ -1,39 +1,81 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DZ Store | السوق الجزائري</title>
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/dark-mode.css" disabled id="dark-mode-css">
-    
-    <!-- الخطوط -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DZ Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .header {
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      background-color: #1e90ff;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      margin: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #007acc;
+      transform: scale(1.05);
+    }
+
+    .moon-btn {
+      background-color: #444;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+  </style>
 </head>
 <body>
-    <!-- شريط التحكم -->
-    <div class="control-bar">
-        <button id="dark-mode-toggle" class="hologram-btn">🌓 وضع ليلي</button>
-        <button id="hologram-toggle" class="hologram-btn">✨ تأثير هولوجرام</button>
-    </div>
 
-    <!-- المحتوى الرئيسي -->
-    <header class="animated fadeInDown">
-        <h1>🏪 DZ Store</h1>
-        <p>السوق الجزائري لبيع وشراء كل شيء</p>
-    </header>
+  <div class="header">
+    <button class="btn">✨ تأثير هولوجرام</button>
+    <button class="btn moon-btn">وضع ليلي</button>
+  </div>
 
-    <main>
-        <div class="products">
-            <!-- المنتجات تُضاف عبر JavaScript -->
-        </div>
-    </main>
+  <h1>DZ Store 🏬</h1>
+  <p>السوق الجزائري لبيع وشراء كل شيء</p>
 
-    <!-- JavaScript -->
-    <script src="js/app.js"></script>
-    <script src="js/effects.js"></script>
+  <div class="footer">
+    صنع بـحب في الجزائر | midotaibi.github.io
+  </div>
+
 </body>
 </html>
